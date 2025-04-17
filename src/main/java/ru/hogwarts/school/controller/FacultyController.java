@@ -25,29 +25,29 @@ public class FacultyController {
     private final FacultyService facultyService;
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<FacultyDto>> getAllStudents() {
+    public ResponseEntity<List<FacultyDto>> getAllFaculties() {
         return new ResponseEntity<>(facultyService.findAll(), HttpStatus.OK);
     }
     
     @GetMapping("/get{id}")
-    public ResponseEntity<FacultyDto> getStudentById(@PathVariable Long id) {
+    public ResponseEntity<FacultyDto> getFacultyById(@PathVariable Long id) {
         return new ResponseEntity<>(facultyService.findById(id), HttpStatus.OK);
     }
     
     @PostMapping("/save")
-    public ResponseEntity<HttpStatus> saveStudent(@RequestBody FacultyDto facultyDto) {
+    public ResponseEntity<HttpStatus> saveFaculty(@RequestBody FacultyDto facultyDto) {
         facultyService.save(facultyDto);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
     
     @DeleteMapping("/delete{id}")
-    public ResponseEntity<HttpStatus> deleteStudent(@PathVariable Long id) {
+    public ResponseEntity<HttpStatus> deleteFaculty(@PathVariable Long id) {
         facultyService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity<HttpStatus> updateStudent(@PathVariable Long id, @RequestBody FacultyDto facultyDto) {
+    public ResponseEntity<HttpStatus> updateFaculty(@PathVariable Long id, @RequestBody FacultyDto facultyDto) {
         facultyService.update(id, facultyDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
