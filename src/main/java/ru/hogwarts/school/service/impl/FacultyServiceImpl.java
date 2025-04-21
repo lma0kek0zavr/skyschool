@@ -19,14 +19,16 @@ public class FacultyServiceImpl implements FacultyService {
 
     private final FacultyMapper facultyMapper;
 
-    @Override
-    public void save(FacultyDto facultyDto) {
-        facultyRepository.save(facultyMapper.toEntity(facultyDto));
+     @Override
+    public FacultyDto save(FacultyDto dto) {
+        facultyRepository.save(facultyMapper.toEntity(dto));
+        return dto;
     }
 
     @Override
-    public void delete(Long id) {
+    public Long delete(Long id) {
         facultyRepository.deleteById(id);
+        return id;
     }
 
     @Override
@@ -35,16 +37,18 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public void update(Long id, FacultyDto facultyDto) {
+    public List<FacultyDto> findAll() {
+        return facultyRepository.findAll()
+                .stream()
+                .map(facultyMapper::toDto)
+                .toList();
+    }
+    @Override
+    public FacultyDto update(Long id, FacultyDto facultyDto) {
         Faculty facultyToUpdate = facultyRepository.findById(id).get();
         facultyToUpdate.setName(facultyDto.getName());
         facultyToUpdate.setColor(facultyDto.getColor());
         facultyRepository.save(facultyToUpdate);
+        return facultyMapper.toDto(facultyToUpdate);
     }
-
-    @Override
-    public List<FacultyDto> findAll() {
-        return facultyRepository.findAll().stream().map(facultyMapper::toDto).toList();
-    }
-    
 }

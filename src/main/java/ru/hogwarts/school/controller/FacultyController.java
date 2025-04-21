@@ -2,8 +2,6 @@ package ru.hogwarts.school.controller;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,30 +23,27 @@ public class FacultyController {
     private final FacultyService facultyService;
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<FacultyDto>> getAllFaculties() {
-        return new ResponseEntity<>(facultyService.findAll(), HttpStatus.OK);
+    public List<FacultyDto> getAllFaculties() {
+        return facultyService.findAll();
     }
     
     @GetMapping("/get{id}")
-    public ResponseEntity<FacultyDto> getFacultyById(@PathVariable Long id) {
-        return new ResponseEntity<>(facultyService.findById(id), HttpStatus.OK);
+    public FacultyDto getFacultyById(@PathVariable Long id) {
+        return facultyService.findById(id);
     }
     
     @PostMapping("/save")
-    public ResponseEntity<HttpStatus> saveFaculty(@RequestBody FacultyDto facultyDto) {
-        facultyService.save(facultyDto);
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    public FacultyDto saveFaculty(@RequestBody FacultyDto facultyDto) {
+        return facultyService.save(facultyDto);
     }
     
     @DeleteMapping("/delete{id}")
-    public ResponseEntity<HttpStatus> deleteFaculty(@PathVariable Long id) {
-        facultyService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public Long deleteFaculty(@PathVariable Long id) {
+        return facultyService.delete(id);
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity<HttpStatus> updateFaculty(@PathVariable Long id, @RequestBody FacultyDto facultyDto) {
-        facultyService.update(id, facultyDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public FacultyDto updateFaculty(@PathVariable Long id, @RequestBody FacultyDto facultyDto) {
+        return facultyService.update(id, facultyDto);
     }
 }

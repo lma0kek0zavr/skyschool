@@ -1,5 +1,7 @@
 package ru.hogwarts.school.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,4 +17,6 @@ public class FacultyDto {
     private String name;
 
     private String color;
+
+    private List<StudentInfoDto> facultyStudents;
 }

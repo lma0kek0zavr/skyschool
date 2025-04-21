@@ -9,12 +9,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentDto {
+public class FacultyInfoDto {
+    
     private Long id;
 
     private String name;
     
-    private int age;
-
-    private FacultyInfoDto studentFaculties;
+    private String color;
 }
