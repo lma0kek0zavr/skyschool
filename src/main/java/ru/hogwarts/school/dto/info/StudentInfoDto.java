@@ -1,4 +1,4 @@
-package ru.hogwarts.school.dto;
+package ru.hogwarts.school.dto.info;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
