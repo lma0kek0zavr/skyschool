@@ -4,19 +4,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
+import ru.hogwarts.school.dto.FacultyDto;
 import ru.hogwarts.school.dto.StudentDto;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @AllArgsConstructor
@@ -26,30 +25,62 @@ public class StudentController {
     private final StudentService studentService;
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<StudentDto>> getAllStudents() {
-        return new ResponseEntity<>(studentService.findAll(), HttpStatus.OK);
+    public List<StudentDto> getAllStudents() {
+        return studentService.findAll();
     }
     
     @GetMapping("/get{id}")
-    public ResponseEntity<StudentDto> getStudentById(@PathVariable Long id) {
-        return new ResponseEntity<>(studentService.findById(id), HttpStatus.OK);
+    public StudentDto getStudentById(@PathVariable Long id) {
+        return studentService.findById(id);
     }
     
     @PostMapping("/save")
-    public ResponseEntity<HttpStatus> saveStudent(@RequestBody StudentDto studentDto) {
-        studentService.save(studentDto);
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    public StudentDto saveStudent(@RequestBody StudentDto studentDto) {
+        return studentService.save(studentDto);
     }
     
     @DeleteMapping("/delete{id}")
-    public ResponseEntity<HttpStatus> deleteStudent(@PathVariable Long id) {
-        studentService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public Long deleteStudent(@PathVariable Long id) {
+        return studentService.delete(id);
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<HttpStatus> updateStudent(@PathVariable Long id, @RequestBody StudentDto studentDto) {
-        studentService.update(id, studentDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PatchMapping("/update/{id}")
+    public StudentDto updateStudent(@PathVariable Long id, @RequestBody StudentDto studentDto) {
+        return studentService.update(id, studentDto);
+    }
+
+    @GetMapping("/getStudentsNames")
+    public List<String> getStudentsNames() {
+        return studentService.getStudentsNames();
+    }
+    
+    @GetMapping("/findByAgeBetween{minRange}/{maxRange}")
+    public List<StudentDto> findByAgeRange(@PathVariable int minRange, @PathVariable int maxRange) {
+        return studentService.findByAgeBetween(minRange, maxRange);
+    }
+    
+    @GetMapping("/findByNameContains{character}")
+    public List<StudentDto> getMethodName(@PathVariable char character) {
+        return studentService.findStudentsWithCharacterContains(character);
+    }
+    
+    @GetMapping("/findStudentsWhoseAgeIsLessThanGiven{age}")
+    public List<StudentDto> findStudents(@PathVariable int age) {
+        return studentService.findStudentsWhoseAgeIsLessThanGiven(age);
+    }
+    
+    @GetMapping("/getStudentsByAge")
+    public List<StudentDto> getStudentsByAge() {
+        return studentService.getStudentByAge();
+    }
+    
+    @GetMapping("/studentFaculty{id}")
+    public FacultyDto getStudentFaculty(@PathVariable Long id) {
+        return studentService.getStudentFaculty(id);
+    }
+    
+    @PatchMapping("/updateFaculty{studentId}/{facultyId}")
+    public FacultyDto updateStudentFaculty(@PathVariable Long studentId, @PathVariable Long facultyId) {
+        return studentService.updateStudentFaculty(studentId, facultyId);
     }
 }
