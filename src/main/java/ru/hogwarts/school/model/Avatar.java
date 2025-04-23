@@ -1,13 +1,10 @@
 package ru.hogwarts.school.model;
 
-import java.util.List;
-
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,15 +15,20 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Faculty {
+public class Avatar {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String filePath;
 
-    private String color;
+    private long fileSize;
 
-    @OneToMany(mappedBy = "studentFaculties", fetch = FetchType.LAZY)
-    private List<Student> facultyStudents;
+    private String mediaType;
+
+    private byte[] data;
+
+    @OneToOne(mappedBy = "avatar")
+    private Student student;
 }

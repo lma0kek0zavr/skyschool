@@ -1,4 +1,4 @@
-package ru.hogwarts.school.dto;
+package ru.hogwarts.school.dto.info;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentInfoDto {
+public class AvatarInfoDto {
     private Long id;
 
-    private String name;
+    private String filePath;
 
-    private int age;
+    private long fileSize;
 }

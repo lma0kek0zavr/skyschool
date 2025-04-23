@@ -3,8 +3,11 @@ package ru.hogwarts.school.service;
 import java.util.List;
 
 import ru.hogwarts.school.dto.FacultyDto;
+import ru.hogwarts.school.model.Faculty;
 
 public interface FacultyService {
+
+    Faculty find(Long id);
 
     FacultyDto save(FacultyDto dto);
 

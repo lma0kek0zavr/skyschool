@@ -5,7 +5,7 @@ import java.util.List;
 import org.mapstruct.Mapper;
 
 import ru.hogwarts.school.dto.FacultyDto;
-import ru.hogwarts.school.dto.StudentInfoDto;
+import ru.hogwarts.school.dto.info.StudentInfoDto;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 
@@ -19,6 +19,8 @@ public interface FacultyMapper {
     StudentInfoDto studentToDto(Student student);
 
     default List<StudentInfoDto> studentsToInfoDto(List<Student> students) {
-        return students.stream().map(this::studentToDto).toList();
+        return students.stream()
+                .map(this::studentToDto)
+                .toList();
     }
 }

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.hogwarts.school.dto.info.AvatarInfoDto;
+import ru.hogwarts.school.dto.info.FacultyInfoDto;
 
 @Getter
 @Setter
@@ -17,4 +19,6 @@ public class StudentDto {
     private int age;
 
     private FacultyInfoDto studentFaculties;
+
+    private AvatarInfoDto avatar;
 }

@@ -1,7 +1,5 @@
 package ru.hogwarts.school.dto;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,12 +10,16 @@ import ru.hogwarts.school.dto.info.StudentInfoDto;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FacultyDto {
+public class AvatarDto {
     private Long id;
 
-    private String name;
+    private String filePath;
 
-    private String color;
+    private long fileSize;
 
-    private List<StudentInfoDto> facultyStudents;
+    private String mediaType;
+
+    private byte[] data;
+
+    private StudentInfoDto student;
 }

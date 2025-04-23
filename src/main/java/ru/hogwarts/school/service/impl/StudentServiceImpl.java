@@ -2,7 +2,9 @@ package ru.hogwarts.school.service.impl;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import lombok.AllArgsConstructor;
 import ru.hogwarts.school.dto.FacultyDto;
@@ -11,8 +13,8 @@ import ru.hogwarts.school.mapper.FacultyMapper;
 import ru.hogwarts.school.mapper.StudentMapper;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
+import ru.hogwarts.school.service.FacultyService;
 import ru.hogwarts.school.service.StudentService;
 
 @Service
@@ -24,11 +26,19 @@ public class StudentServiceImpl implements StudentService {
 
     private final FacultyMapper facultyMapper;
 
-    private final FacultyRepository facultyRepository;
+    private final FacultyService facultyService;
+
+    @Override
+    public Student find(Long id) {
+        return studentRepository.findById(id).orElseThrow(
+            () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found")
+        );
+    }
 
     @Override
     public StudentDto save(StudentDto dto) {
         studentRepository.save(studentMapper.toEntity(dto));
+
         return dto;
     }
 
@@ -40,7 +50,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentDto findById(Long id) {
-        return studentMapper.toDto(studentRepository.findById(id).get());
+        return studentMapper.toDto(find(id));
     }
 
     @Override
@@ -53,10 +63,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentDto update(Long id, StudentDto studentDto) {
-        Student studentToUpdate = studentRepository.findById(id).get();
+        Student studentToUpdate = find(id);
+
         studentToUpdate.setName(studentDto.getName());
         studentToUpdate.setAge(studentDto.getAge());
         studentRepository.save(studentToUpdate);
+
         return studentMapper.toDto(studentToUpdate);
     }
 
@@ -100,10 +112,13 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public FacultyDto updateStudentFaculty(Long studentId, Long facultyId) {
-        Student studentToUpdate = studentRepository.findById(studentId).get();
-        Faculty facultyToSet = facultyRepository.findById(facultyId).get();
+        Student studentToUpdate = find(studentId);
+        Faculty facultyToSet = facultyService.find(facultyId);
+
         studentToUpdate.setStudentFaculties(facultyToSet);
+
         studentRepository.save(studentToUpdate);
+
         return facultyMapper.toDto(facultyToSet);
     }
 }

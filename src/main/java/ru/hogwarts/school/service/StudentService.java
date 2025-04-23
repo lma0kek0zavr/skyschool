@@ -4,8 +4,11 @@ import java.util.List;
 
 import ru.hogwarts.school.dto.FacultyDto;
 import ru.hogwarts.school.dto.StudentDto;
+import ru.hogwarts.school.model.Student;
 
 public interface StudentService {
+
+    Student find(Long id);
 
     StudentDto save(StudentDto dto);
 
