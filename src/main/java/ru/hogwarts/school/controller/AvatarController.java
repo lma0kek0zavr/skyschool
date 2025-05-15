@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -72,5 +73,15 @@ public class AvatarController {
             is.transferTo(os);
         }
     }
-    
+
+    @GetMapping("/avatar/all")
+    public ResponseEntity<List<byte[]>> getAllAvatars() {
+        List<AvatarDto> avatars = avatarService.findAll();
+
+        List<byte[]> avatarData = avatars.stream()
+            .map(AvatarDto::getData)
+            .toList();
+
+        return ResponseEntity.status(HttpStatus.OK).body(avatarData);
+    }
 }
