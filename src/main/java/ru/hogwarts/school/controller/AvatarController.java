@@ -33,7 +33,7 @@ public class AvatarController {
     
     private final AvatarService avatarService;
 
-    @PostMapping(value = "/save{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public AvatarDto saveAvatar(@RequestParam MultipartFile file) throws IOException {
         return avatarService.save(file);
     }

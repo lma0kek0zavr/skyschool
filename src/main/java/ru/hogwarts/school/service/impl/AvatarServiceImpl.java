@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import ru.hogwarts.school.dto.AvatarDto;
 import ru.hogwarts.school.mapper.AvatarMapper;
