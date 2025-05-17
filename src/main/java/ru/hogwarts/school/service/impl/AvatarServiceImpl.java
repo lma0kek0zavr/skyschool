@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,7 +22,6 @@ import ru.hogwarts.school.dto.AvatarDto;
 import ru.hogwarts.school.mapper.AvatarMapper;
 import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.repository.AvatarPagination;
 import ru.hogwarts.school.repository.AvatarRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.AvatarService;
@@ -38,8 +38,6 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Value("${path.to.avatars.folder}")
     private String avatarsDir;
-
-    private AvatarPagination avatarPagination = new AvatarPagination();
 
     @Override
     public AvatarDto updateStudentAvatar(Long studentId, Long avatarId) {
@@ -104,8 +102,8 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     @Override
-    public List<AvatarDto> findAll() {
-        Page<Avatar> avatarPage = avatarRepository.findAll(avatarPagination.avatarRequest);
+    public List<AvatarDto> findAll(int page, int size) {
+        Page<Avatar> avatarPage = avatarRepository.findAll(PageRequest.of(page, size));
 
         List<Avatar> avatars = avatarPage.getContent();
 

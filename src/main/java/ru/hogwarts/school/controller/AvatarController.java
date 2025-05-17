@@ -45,7 +45,7 @@ public class AvatarController {
     }
 
     @GetMapping("/avatar{id}-from-server")
-    public ResponseEntity<byte[]> getAvatar(@PathVariable Long id) {
+    public ResponseEntity<byte[]> getAvatar(@RequestParam Long id) {
         AvatarDto avatar = avatarService.getAvatar(id);
 
         HttpHeaders headers = new HttpHeaders();
@@ -75,8 +75,8 @@ public class AvatarController {
     }
 
     @GetMapping("/avatar/all")
-    public ResponseEntity<List<byte[]>> getAllAvatars() {
-        List<AvatarDto> avatars = avatarService.findAll();
+    public ResponseEntity<List<byte[]>> getAllAvatars(@RequestParam int page, @RequestParam int size) {
+        List<AvatarDto> avatars = avatarService.findAll(page, size);
 
         List<byte[]> avatarData = avatars.stream()
             .map(AvatarDto::getData)

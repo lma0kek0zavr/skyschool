@@ -18,5 +18,5 @@ public interface AvatarService {
 
     Avatar find(Long id);
 
-    List<AvatarDto> findAll();
+    List<AvatarDto> findAll(int page, int size);
 }
