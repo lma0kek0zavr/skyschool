@@ -42,6 +42,7 @@ public class AvatarServiceImpl implements AvatarService {
     @Override
     public AvatarDto updateStudentAvatar(Long studentId, Long avatarId) {
         Avatar avatarToSet = find(avatarId);
+
         Student studentToUpdate = studentRepository.findById(studentId).orElseThrow(
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found")
         );
