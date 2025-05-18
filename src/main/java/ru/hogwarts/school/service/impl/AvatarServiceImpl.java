@@ -7,14 +7,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import ru.hogwarts.school.dto.AvatarDto;
 import ru.hogwarts.school.mapper.AvatarMapper;
@@ -97,5 +99,16 @@ public class AvatarServiceImpl implements AvatarService {
         return avatarRepository.findById(avatarId).orElseThrow(
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Avatar not found")
         );
+    }
+
+    @Override
+    public List<AvatarDto> findAll(int page, int size) {
+        Page<Avatar> avatarPage = avatarRepository.findAll(PageRequest.of(page, size));
+
+        List<Avatar> avatars = avatarPage.getContent();
+
+        return avatars.stream()
+                .map(avatarMapper::toDto)
+                .toList();
     }
 }
