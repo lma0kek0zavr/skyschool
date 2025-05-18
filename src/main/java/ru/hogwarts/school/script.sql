@@ -13,4 +13,3 @@ SELECT count(s) FROM student s;
 SELECT avg(s.age) FROM student s;
 
 SELECT * FROM student ORDER BY student.id DESC LIMIT 5;
-
