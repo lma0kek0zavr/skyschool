@@ -1,0 +1,3 @@
+databaseChangeLog:
+  - include:
+    file: liquidbase/scripts/student.sql
