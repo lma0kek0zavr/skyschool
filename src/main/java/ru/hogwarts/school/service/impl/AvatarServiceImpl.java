@@ -9,6 +9,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +27,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.AvatarRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.AvatarService;
+import ru.hogwarts.school.service.StudentService;
 
 @Service
 @RequiredArgsConstructor
@@ -36,16 +39,19 @@ public class AvatarServiceImpl implements AvatarService {
 
     private final StudentRepository studentRepository;
 
+    private final StudentService studentService;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Value("${path.to.avatars.folder}")
     private String avatarsDir;
 
     @Override
     public AvatarDto updateStudentAvatar(Long studentId, Long avatarId) {
+        logger.info("Was invoked method for update student avatar: with student id {} and avatar id {}", studentId, avatarId);
         Avatar avatarToSet = find(avatarId);
 
-        Student studentToUpdate = studentRepository.findById(studentId).orElseThrow(
-            () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found")
-        );
+        Student studentToUpdate = studentService.find(avatarId);
 
         studentToUpdate.setAvatar(avatarToSet);
         
@@ -56,6 +62,8 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public AvatarDto save(MultipartFile avatarFile) throws IOException {
+        logger.info("Was invoked method for save avatar: {}");
+
         Path path = Path.of(avatarsDir, avatarFile.getOriginalFilename() + getExtensions(avatarFile.getOriginalFilename()));
         Files.createDirectories(path.getParent());
         Files.deleteIfExists(path);
@@ -90,6 +98,8 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public AvatarDto getAvatar(Long avatarId) {
+        logger.info("Was invoked method for get avatar by id: {}", avatarId);
+
         Avatar avatar = find(avatarId);
         
         return avatarMapper.toDto(avatar);
@@ -97,13 +107,23 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public Avatar find(Long avatarId) {
-        return avatarRepository.findById(avatarId).orElseThrow(
-            () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Avatar not found")
-        );
+        logger.info("Was invoked method for find avatar by id: {}", avatarId);
+
+        try {
+            avatarRepository.findById(avatarId);
+        } catch (RuntimeException e) {
+            logger.error("ResponseStatusException was throw", e);
+
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Avatar not found");
+        }
+
+        return avatarRepository.findById(avatarId).get();
     }
 
     @Override
     public List<AvatarDto> findAll(int page, int size) {
+        logger.info("Was invoked method for find all avatars with page: {} and size: {}", page, size);
+
         Page<Avatar> avatarPage = avatarRepository.findAll(PageRequest.of(page, size));
 
         List<Avatar> avatars = avatarPage.getContent();
