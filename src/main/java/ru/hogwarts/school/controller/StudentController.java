@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @AllArgsConstructor
@@ -83,4 +85,15 @@ public class StudentController {
     public FacultyDto updateStudentFaculty(@PathVariable Long studentId, @PathVariable Long facultyId) {
         return studentService.updateStudentFaculty(studentId, facultyId);
     }
+
+    @GetMapping("/getAllStartWithLetter")
+    public List<StudentDto> getAllStartWith() {
+        return studentService.getAllStarWithLetter();
+    }
+
+    @GetMapping("/averageAge")
+    public double getAverageAge() {
+        return studentService.getAverageAge();
+    }
+    
 }

@@ -158,4 +158,26 @@ public class StudentServiceImpl implements StudentService {
 
         return facultyMapper.toDto(facultyToSet);
     }
+
+    @Override
+    public List<StudentDto> getAllStarWithLetter() {
+        List<Student> students = studentRepository.findAll();
+
+        return students.stream().parallel()
+                .filter(student -> student.getName().startsWith("A"))
+                .map(studentMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    public int getAverageAge() {
+        List<Student> students = studentRepository.findAll();
+
+        double averageDouble = students.stream().parallel()
+                .mapToDouble(Student::getAge)
+                .average()
+                .getAsDouble();
+
+        return (int)Math.round(averageDouble);
+    }
 }

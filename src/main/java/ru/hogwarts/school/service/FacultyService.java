@@ -18,4 +18,6 @@ public interface FacultyService {
     List<FacultyDto> findAll();
 
     FacultyDto update(Long id, FacultyDto facultyDto);
+
+    FacultyDto findLongestName();
 }

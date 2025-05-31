@@ -87,4 +87,14 @@ public class FacultyServiceImpl implements FacultyService {
         
         return facultyMapper.toDto(facultyToUpdate);
     }
+
+    @Override
+    public FacultyDto findLongestName() {
+        List<Faculty> faculties = facultyRepository.findAll();
+
+        return faculties.stream().parallel()
+                .max((f1, f2) -> Integer.compare(f1.getName().length(), f2.getName().length()))
+                .map(facultyMapper::toDto)
+                .orElse(null);
+    }
 }
