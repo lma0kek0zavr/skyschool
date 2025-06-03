@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 @RestController
 @AllArgsConstructor
@@ -94,6 +92,16 @@ public class StudentController {
     @GetMapping("/averageAge")
     public double getAverageAge() {
         return studentService.getAverageAge();
+    }
+    
+    @GetMapping("/printParallel")
+    public void printParallel() {
+        studentService.getParallel();
+    }
+    
+    @GetMapping("printSynchronized")
+    public void printSynchronized() {
+        studentService.getSynchronized();
     }
     
 }
