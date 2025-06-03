@@ -1,9 +1,12 @@
 package ru.hogwarts.school.service.impl;
 
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -179,5 +182,87 @@ public class StudentServiceImpl implements StudentService {
                 .getAsDouble();
 
         return (int)Math.round(averageDouble);
+    }
+
+    @Override
+    public void getParallel() {
+        List<Student> students = studentRepository.findAll();
+
+        if (students.size() >= 1) {
+            System.out.printf("Main thread {\n");
+                System.out.printf("  %s\n", students.get(0).getName());
+                System.out.printf("  %s\n", students.get(1).getName());
+                System.out.println("}\n");
+        }
+
+        new Thread(() -> {
+            if (students.size() >= 3) {
+                System.out.printf("Parallel thread {\n");
+                System.out.printf("  %s\n", students.get(2).getName());
+                System.out.printf("  %s\n", students.get(3).getName());
+                System.out.println("}\n");
+            }
+        }).start();
+
+        new Thread(() -> {
+            if (students.size() >= 5) {
+                System.out.printf("Parallel thread {\n");
+                System.out.printf("  %s\n", students.get(4).getName());
+                System.out.printf("  %s\n", students.get(5).getName());
+                System.out.println("}\n");
+            }
+        }).start();
+    }
+
+    @Override
+    public void getSynchronized() {
+        List<Student> students = studentRepository.findAll();
+
+        CountDownLatch count = new CountDownLatch(2);
+
+        Object lock = new Object();
+
+        if (students.size() >= 1) {
+            System.out.printf("Main thread {\n");
+                System.out.printf("  %s\n", students.get(0).getName());
+                System.out.printf("  %s\n", students.get(1).getName());
+                System.out.println("}\n");
+        }
+        
+        new Thread(() -> {
+            try {
+                synchronized (lock) {
+                    if (students.size() >= 3) {
+                        System.out.printf("Parallel thread {\n");
+                        System.out.printf("  %s\n", students.get(2).getName());
+                        System.out.printf("  %s\n", students.get(3).getName());
+                        System.out.println("}\n");
+                    }
+                } 
+            } finally  {
+                count.countDown();
+            }
+        }).start();
+
+        new Thread(() -> {
+            try {
+                synchronized (lock) {
+                    if (students.size() >= 3) {
+                        System.out.printf("Parallel thread {\n");
+                        System.out.printf("  %s\n", students.get(4).getName());
+                        System.out.printf("  %s\n", students.get(5).getName());
+                        System.out.println("}\n");
+                    }
+                } 
+            } finally  {
+                count.countDown();
+            }
+        }).start();
+
+        try {
+            count.await();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

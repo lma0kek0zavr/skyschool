@@ -37,4 +37,8 @@ public interface StudentService {
     List<StudentDto> getAllStarWithLetter();
 
     int getAverageAge();
+
+    void getParallel();
+
+    void getSynchronized();
 }
