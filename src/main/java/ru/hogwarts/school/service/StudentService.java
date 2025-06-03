@@ -33,4 +33,8 @@ public interface StudentService {
     FacultyDto getStudentFaculty(Long id);
 
     FacultyDto updateStudentFaculty(Long studentId, Long facultyId);
+
+    List<StudentDto> getAllStarWithLetter();
+
+    int getAverageAge();
 }

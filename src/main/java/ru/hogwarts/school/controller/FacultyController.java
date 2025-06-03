@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 import ru.hogwarts.school.dto.FacultyDto;
 import ru.hogwarts.school.service.FacultyService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @AllArgsConstructor
@@ -46,4 +48,10 @@ public class FacultyController {
     public FacultyDto updateFaculty(@PathVariable Long id, @RequestBody FacultyDto facultyDto) {
         return facultyService.update(id, facultyDto);
     }
+
+    @GetMapping("/longestName")
+    public FacultyDto getMethodName() {
+        return facultyService.findLongestName();
+    }
+    
 }
